@@ -43,7 +43,7 @@ let diskLoaded = false;
 let chain: Promise<unknown> = Promise.resolve();
 
 function cacheFile(): string {
-  return path.join(process.cwd(), env.dataDir, "geocache-v2.json");
+  return path.resolve(process.cwd(), env.dataDir, "geocache-v2.json");
 }
 
 async function loadCache(): Promise<void> {

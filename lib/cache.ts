@@ -15,7 +15,7 @@ function fileFor(namespace: string, key: string): string {
   // файла строим из хэша: обрезанный по длине ключ склеивал соседние страницы.
   const digest = createHash("sha1").update(key).digest("hex").slice(0, 16);
   const readable = key.replace(/[^a-z0-9_-]/gi, "_").slice(0, 60);
-  return path.join(process.cwd(), env.dataDir, "cache", namespace, `${readable}-${digest}.json`);
+  return path.resolve(process.cwd(), env.dataDir, "cache", namespace, `${readable}-${digest}.json`);
 }
 
 export async function cacheGet<T>(namespace: string, key: string, ttlMs: number): Promise<T | null> {

@@ -5,7 +5,8 @@ import { env } from "./env";
 import { DEFAULT_PARAMS, emptyStats, type Listing, type RunState } from "./types";
 
 function stateFile(): string {
-  return path.join(process.cwd(), env.dataDir, "state.json");
+  // resolve, а не join: DATA_DIR на хостинге задают абсолютным путём.
+  return path.resolve(process.cwd(), env.dataDir, "state.json");
 }
 
 export function emptyState(): RunState {
