@@ -5,7 +5,7 @@
 # теряются только письма об истечении. Нужна — добавьте первым блоком:
 #   { email вы@почта }
 
-{$APP_DOMAIN:peakcut.online} {
+{$APP_DOMAIN:eppb-portal.online} {
 	encode zstd gzip
 	reverse_proxy rieltor:3007
 }

@@ -6,19 +6,19 @@
 - `caddy` — принимает 80/443, сам получает сертификат Let's Encrypt и проксирует
   трафик на `rieltor:3007`.
 
-Домен по умолчанию — **peakcut.online**.
+Домен по умолчанию — **eppb-portal.online**.
 
 ## Перед запуском
 
-1. **DNS — самое важное.** A-запись `peakcut.online` → IP сервера должна
+1. **DNS — самое важное.** A-запись `eppb-portal.online` → IP сервера должна
    существовать ДО первого запуска. Проверить:
 
    ```bash
-   dig +short peakcut.online
+   dig +short eppb-portal.online
    ```
 
    Пусто — значит записи нет, и Let's Encrypt ответит
-   `NXDOMAIN looking up A for peakcut.online`, сертификата не будет.
+   `NXDOMAIN looking up A for eppb-portal.online`, сертификата не будет.
    Заводится в hPanel → Домены → DNS-зона: тип `A`, имя `@`, значение — IP VPS.
    Обновление занимает от нескольких минут до пары часов.
 
@@ -58,7 +58,7 @@ docker compose up -d --build
 
 | Переменная | Что вставить |
 | --- | --- |
-| `APP_DOMAIN` | `peakcut.online` |
+| `APP_DOMAIN` | `eppb-portal.online` |
 | `GEMINI_USE_VERTEX` | `0` для ключа AI Studio, `1` для сервисного аккаунта |
 | `GEMINI_API_KEY` | ключ из Google AI Studio (если `GEMINI_USE_VERTEX=0`) |
 | `GOOGLE_CLOUD_PROJECT` | `gen-lang-client-0537370402` (если Vertex) |
@@ -86,9 +86,9 @@ Krisha отдаёт номер только вошедшим в аккаунт. 
 
 ## Проверка после деплоя
 
-1. `https://peakcut.online/api/health` → `{"ok":true,"ai":true,...}`.
+1. `https://eppb-portal.online/api/health` → `{"ok":true,"ai":true,...}`.
    `ai:false` означает, что ключ Gemini не подхватился.
-2. `https://peakcut.online/api/ai-ping` → модель отвечает
+2. `https://eppb-portal.online/api/ai-ping` → модель отвечает
    (`quota:true` — упёрлись в квоту, подождать минуту).
 3. Открыть сайт, нажать «Начать парсинг», смотреть лог слева.
 
