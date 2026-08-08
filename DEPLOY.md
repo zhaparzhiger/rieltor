@@ -10,9 +10,20 @@
 
 ## Перед запуском
 
-1. **DNS.** A-запись `peakcut.online` → IP сервера. Проверить: `ping peakcut.online`
-   должен отвечать нужным адресом. Пока DNS не резолвится, Let's Encrypt
-   сертификат не выдаст и Caddy будет крутиться в ошибках.
+1. **DNS — самое важное.** A-запись `peakcut.online` → IP сервера должна
+   существовать ДО первого запуска. Проверить:
+
+   ```bash
+   dig +short peakcut.online
+   ```
+
+   Пусто — значит записи нет, и Let's Encrypt ответит
+   `NXDOMAIN looking up A for peakcut.online`, сертификата не будет.
+   Заводится в hPanel → Домены → DNS-зона: тип `A`, имя `@`, значение — IP VPS.
+   Обновление занимает от нескольких минут до пары часов.
+
+   Пока DNS не поднялся, приложение всё равно доступно по `http://<IP сервера>` —
+   в Caddyfile для этого есть отдельный блок `:80`. Без HTTPS, но работает.
 2. **Порты 80 и 443 на сервере должны быть свободны.** Если там уже что-то висит
    (nginx, другой контейнер) — Caddy не поднимется. Проверить по SSH:
    `sudo ss -lntp | grep -E ':80 |:443 '`. Что делать, если заняты, — в конце файла.
@@ -48,7 +59,6 @@ docker compose up -d --build
 | Переменная | Что вставить |
 | --- | --- |
 | `APP_DOMAIN` | `peakcut.online` |
-| `ACME_EMAIL` | ваша почта для Let's Encrypt |
 | `GEMINI_USE_VERTEX` | `0` для ключа AI Studio, `1` для сервисного аккаунта |
 | `GEMINI_API_KEY` | ключ из Google AI Studio (если `GEMINI_USE_VERTEX=0`) |
 | `GOOGLE_CLOUD_PROJECT` | `gen-lang-client-0537370402` (если Vertex) |
