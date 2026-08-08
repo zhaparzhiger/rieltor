@@ -1,0 +1,16 @@
+node_modules/
+.next/
+
+# секреты — никогда не коммитим
+.env
+.env.local
+.env.*.local
+*google-key*.json
+
+# результаты прогонов и кэш страниц
+data/
+.cache/
+
+*.tsbuildinfo
+next-env.d.ts
+*.log

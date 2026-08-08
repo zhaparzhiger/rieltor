@@ -1,0 +1,7 @@
+# Docker-сборка идёт в Linux: CRLF в Dockerfile и скриптах её ломает.
+* text=auto eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
