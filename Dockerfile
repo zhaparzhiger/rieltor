@@ -31,4 +31,8 @@ EXPOSE 3007
 ENV PORT=3007
 ENV HOSTNAME=0.0.0.0
 
+# curl в образе нет — проверяем своим же рантаймом.
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:3007/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
 CMD ["node", "server.js"]

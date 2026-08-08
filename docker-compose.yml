@@ -1,0 +1,52 @@
+services:
+  rieltor:
+    build: .
+    image: rieltor:latest
+    container_name: rieltor
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: "3007"
+      HOSTNAME: 0.0.0.0
+      DATA_DIR: /app/data
+    # Наружу не публикуем: трафик идёт через caddy.
+    expose:
+      - "3007"
+    volumes:
+      # Кэш страниц, геокэш и последний результат переживают перезапуск.
+      - rieltor-data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3007/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Терминирует HTTPS и сам получает сертификат Let's Encrypt для APP_DOMAIN.
+  # Если на сервере уже что-то занимает 80/443 — смотрите DEPLOY.md, там вариант без caddy.
+  caddy:
+    image: caddy:2-alpine
+    container_name: rieltor-caddy
+    restart: unless-stopped
+    depends_on:
+      - rieltor
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  rieltor-data:
+  caddy-data:
+  caddy-config:

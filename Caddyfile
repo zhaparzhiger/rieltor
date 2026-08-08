@@ -1,0 +1,9 @@
+# Домен и почта берутся из .env (APP_DOMAIN, ACME_EMAIL).
+{
+	email {$ACME_EMAIL}
+}
+
+{$APP_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy rieltor:3007
+}
