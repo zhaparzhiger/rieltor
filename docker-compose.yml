@@ -31,7 +31,10 @@ services:
   # Терминирует HTTPS и сам получает сертификат Let's Encrypt для APP_DOMAIN.
   # Если на сервере уже что-то занимает 80/443 — смотрите DEPLOY.md, там вариант без caddy.
   caddy:
-    image: caddy:2-alpine
+    build:
+      context: .
+      dockerfile: caddy.Dockerfile
+    image: rieltor-caddy:latest
     container_name: rieltor-caddy
     restart: unless-stopped
     depends_on:
@@ -42,7 +45,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Только именованные тома: бинд-маунты Docker Manager резолвит не туда.
       - caddy-data:/data
       - caddy-config:/config
 
